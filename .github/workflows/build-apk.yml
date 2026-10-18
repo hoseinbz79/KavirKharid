@@ -2,16 +2,19 @@ name: Build KavirKharid APK
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Checkout
+      - name: Checkout project
         uses: actions/checkout@v4
 
-      - name: Set up Java
+      - name: Set up Java 17
         uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -20,12 +23,13 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install SDK packages
+      - name: Install Android SDK packages
         run: |
           sdkmanager --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Extract project
-        run: unzip -o KavirKharid_Android_Project.zip -d .
+        run: |
+          unzip -o KavirKharid_Android_Project.zip -d .
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
